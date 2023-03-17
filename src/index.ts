@@ -1,6 +1,9 @@
 import express from 'express';
+import connectDB from './db/db';
 
 const app = express();
+
+connectDB();
 
 const PORT = process.env.PORT || 3700;
 
@@ -11,5 +14,5 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/contacts', require('./routes/contacts'));
 
 app.listen(PORT, () => {
-  console.log(`Serve is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
