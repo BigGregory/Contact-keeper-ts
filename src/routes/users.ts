@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import { check, validationResult } from 'express-validator';
+import config from 'config';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
 
@@ -47,9 +49,22 @@ router.post(
 
       await user.save();
 
-      res.status(201).json({
-        msg: 'User saved!',
-      });
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        {
+          expiresIn: 360000,
+        },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err: any) {
       console.error(err.message);
       res.status(500).send('Server error');
