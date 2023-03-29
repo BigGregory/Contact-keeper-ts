@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
-import { TypedRequest, UserType } from '../types';
+import { TypedRequest, UserBase } from '../types';
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ router.post(
       min: 6,
     }),
   ],
-  async (req: TypedRequest<UserType>, res: Response) => {
+  async (req: TypedRequest<UserBase>, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });

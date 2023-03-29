@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-import { UserType } from '../types';
+import { UserBase } from '../types';
 
-const UserSchema = new mongoose.Schema<UserType>({
+const UserSchema = new mongoose.Schema<UserBase>({
   name: {
     type: String,
     required: true,
@@ -22,4 +22,4 @@ const UserSchema = new mongoose.Schema<UserType>({
   },
 });
 
-export default mongoose.model<UserType>('user', UserSchema);
+export default mongoose.model<UserBase>('user', UserSchema);

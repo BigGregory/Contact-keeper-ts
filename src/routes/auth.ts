@@ -4,16 +4,25 @@ import config from 'config';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+import { checkJWT } from '../middleware/checkJWT';
 import User from '../models/User';
-import { TypedRequest, UserType } from '../types';
+import { TypedRequest, UserBase } from '../types';
 
 const router = express.Router();
 
 // @route   GET api/auth
 // @desc    Get logged in user
 // @access  Private
-router.get('/', (req: Request, res: Response) => {
-  res.send('Get logged in user');
+router.get('/', checkJWT, async (req: TypedRequest, res: Response) => {
+  try {
+    const user =
+      req.user && (await User.findById(req.user.id).select('-password'));
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
 });
 
 // @route   POST api/auth
@@ -25,7 +34,7 @@ router.post(
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Password is required').exists(),
   ],
-  async (req: TypedRequest<UserType>, res: Response) => {
+  async (req: TypedRequest<UserBase>, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
