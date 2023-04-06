@@ -1,14 +1,14 @@
 import { Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from 'config';
 
 import { TypedRequest, UserDB } from '../types';
 
-interface JwtPayload {
+interface JwtPayloadExtended extends JwtPayload {
   user: UserDB;
 }
 
-export const checkJWT = (
+export const checkAuth = (
   req: TypedRequest,
   res: Response,
   next: NextFunction
@@ -21,7 +21,10 @@ export const checkJWT = (
   }
 
   try {
-    const decoded = jwt.verify(token, config.get('jwtSecret')) as JwtPayload;
+    const decoded = jwt.verify(
+      token,
+      config.get('jwtSecret')
+    ) as JwtPayloadExtended;
 
     req.user = decoded.user;
     next();

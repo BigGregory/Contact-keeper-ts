@@ -6,6 +6,8 @@ export interface UserBase {
   password: string;
   date?: Date;
 }
+
+export interface ContactSchema {}
 export interface UserDB extends UserBase {
   id: string;
 }

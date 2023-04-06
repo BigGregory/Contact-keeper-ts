@@ -4,7 +4,7 @@ import config from 'config';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { checkJWT } from '../middleware/checkJWT';
+import { checkAuth } from '../middleware';
 import User from '../models/User';
 import { TypedRequest, UserBase } from '../types';
 
@@ -13,7 +13,7 @@ const router = express.Router();
 // @route   GET api/auth
 // @desc    Get logged in user
 // @access  Private
-router.get('/', checkJWT, async (req: TypedRequest, res: Response) => {
+router.get('/', checkAuth, async (req: TypedRequest, res: Response) => {
   try {
     const user =
       req.user && (await User.findById(req.user.id).select('-password'));
