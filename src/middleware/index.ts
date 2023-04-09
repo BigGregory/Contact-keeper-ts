@@ -2,14 +2,14 @@ import { Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from 'config';
 
-import { TypedRequest, UserDB } from '../types';
+import { TypedRequest, UserDB, ContactBase } from '../types';
 
 interface JwtPayloadExtended extends JwtPayload {
   user: UserDB;
 }
 
 export const checkAuth = (
-  req: TypedRequest,
+  req: TypedRequest<any>, // hardcoded generic to "any" because of further type manipulation
   res: Response,
   next: NextFunction
 ) => {

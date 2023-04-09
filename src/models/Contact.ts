@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-import { ContactSchema } from '../types';
+import { ContactBase } from '../types';
 
-const ContactSchema = new mongoose.Schema<ContactSchema>({
+const ContactSchema = new mongoose.Schema<ContactBase>({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users',
@@ -27,4 +27,4 @@ const ContactSchema = new mongoose.Schema<ContactSchema>({
   },
 });
 
-export default mongoose.model<ContactSchema>('contact', ContactSchema);
+export default mongoose.model<ContactBase>('contact', ContactSchema);

@@ -4,7 +4,7 @@ import { check, validationResult } from 'express-validator';
 import { checkAuth } from '../middleware';
 import User from '../models/User';
 import Contact from '../models/Contact';
-import { TypedRequest, UserBase } from '../types';
+import { TypedRequest, ContactBase } from '../types';
 
 const router = express.Router();
 
@@ -26,9 +26,35 @@ router.get('/', checkAuth, async (req: TypedRequest, res: Response) => {
 // @route   POST api/contacts
 // @desc    Add new contact
 // @access  Private
-router.post('/', (req, res) => {
-  res.send('Add new contact');
-});
+router.post(
+  '/',
+  checkAuth,
+  [check('name', 'Name is required').not().isEmpty()],
+  async (req: TypedRequest<ContactBase>, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, email, phone, type } = req.body;
+
+    try {
+      const newContact = new Contact<ContactBase>({
+        name,
+        email,
+        phone,
+        type,
+        user: req.user?.id,
+      });
+
+      const contact = await newContact.save();
+      res.json(contact);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+  }
+);
 
 // @route   PUT api/contacts/:id
 // @desc    Update contact

@@ -7,7 +7,14 @@ export interface UserBase {
   date?: Date;
 }
 
-export interface ContactSchema {}
+export interface ContactBase {
+  name: string;
+  email: string;
+  phone: string;
+  type: string;
+  date?: Date;
+  user?: string;
+}
 export interface UserDB extends UserBase {
   id: string;
 }
