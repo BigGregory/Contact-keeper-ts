@@ -2,6 +2,7 @@ import express, { Response } from 'express';
 import { check, validationResult } from 'express-validator';
 
 import { checkAuth } from '../middleware';
+import { sendServerError } from '../utils';
 import User from '../models/User';
 import Contact from '../models/Contact';
 import { TypedRequest, ContactBase } from '../types';
@@ -18,8 +19,7 @@ router.get('/', checkAuth, async (req: TypedRequest, res: Response) => {
       (await Contact.find({ user: req.user.id }).sort({ date: -1 }));
     res.json(contacts);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
+    sendServerError(error, res);
   }
 });
 
@@ -50,8 +50,7 @@ router.post(
       const contact = await newContact.save();
       res.json(contact);
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Server error');
+      sendServerError(error, res);
     }
   }
 );
@@ -89,8 +88,7 @@ router.put(
       );
       res.status(201).json(contact);
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Server error');
+      sendServerError(error, res);
     }
   }
 );
@@ -115,8 +113,7 @@ router.delete(
       await Contact.findByIdAndRemove(req.params.id);
       res.status(200).json({ msg: 'Contact removed' });
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Server error');
+      sendServerError(error, res);
     }
   }
 );

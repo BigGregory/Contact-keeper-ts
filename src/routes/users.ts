@@ -4,6 +4,7 @@ import config from 'config';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+import { sendServerError } from '../utils';
 import User from '../models/User';
 import { TypedRequest, UserBase } from '../types';
 
@@ -66,9 +67,8 @@ router.post(
           res.json({ token });
         }
       );
-    } catch (err: any) {
-      console.error(err.message);
-      res.status(500).send('Server error');
+    } catch (error: any) {
+      sendServerError(error, res);
     }
   }
 );

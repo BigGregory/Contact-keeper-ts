@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import { checkAuth } from '../middleware';
+import { sendServerError } from '../utils';
 import User from '../models/User';
 import { TypedRequest, UserBase } from '../types';
 
@@ -20,8 +21,7 @@ router.get('/', checkAuth, async (req: TypedRequest, res: Response) => {
 
     res.json(user);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
+    sendServerError(error, res);
   }
 });
 
@@ -72,8 +72,7 @@ router.post(
         }
       );
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Server Error');
+      sendServerError(error, res);
     }
   }
 );
