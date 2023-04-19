@@ -6,10 +6,16 @@ interface ContactItemProp {
   contact: Contact;
 }
 
-const ContactItem = ({
-  contact: { name, email, phone, type, id },
-}: ContactItemProp) => {
-  const { deleteContact } = useContext(ContactContext);
+const ContactItem = ({ contact }: ContactItemProp) => {
+  const { deleteContact, setCurrent, clearCurrent } =
+    useContext(ContactContext);
+
+  const { name, email, phone, type, id } = contact;
+
+  const onDelete = () => {
+    id && deleteContact(id);
+    // clearCurrent(); Doubts of using this here
+  };
   return (
     <div className="card bg-light">
       <h3 className="text-primary text-left">
@@ -36,15 +42,13 @@ const ContactItem = ({
         )}
       </ul>
       <p>
-        <button className="btn btn-dark btn-sm" onClick={() => {}}>
+        <button
+          className="btn btn-dark btn-sm"
+          onClick={() => setCurrent(contact)}
+        >
           Edit
         </button>
-        <button
-          className="btn btn-danger btn-sm"
-          onClick={() => {
-            id && deleteContact(id);
-          }}
-        >
+        <button className="btn btn-danger btn-sm" onClick={onDelete}>
           Delete
         </button>
       </p>

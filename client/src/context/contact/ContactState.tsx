@@ -15,6 +15,9 @@ export interface ContactState {
   contacts: Contact[];
   addContact: (contact: Contact) => void;
   deleteContact: (id: string) => void;
+  current: Contact | null;
+  setCurrent: (contact: Contact) => void;
+  clearCurrent: () => void;
 }
 
 const ContactState = ({ children }: PropsWithChildren) => {
@@ -37,6 +40,9 @@ const ContactState = ({ children }: PropsWithChildren) => {
     ],
     addContact: () => {},
     deleteContact: () => {},
+    current: null,
+    setCurrent: () => {},
+    clearCurrent: () => {},
   };
 
   const [state, dispatch] = useReducer(contactReducer, initialState);
@@ -57,12 +63,28 @@ const ContactState = ({ children }: PropsWithChildren) => {
     });
   };
 
+  const setCurrent = (contact: Contact) => {
+    dispatch({
+      type: ActionTypes.SET_CURRENT,
+      payload: contact,
+    });
+  };
+
+  const clearCurrent = () => {
+    dispatch({
+      type: ActionTypes.SET_CURRENT,
+    });
+  };
+
   return (
     <ContactContext.Provider
       value={{
         contacts: state.contacts,
+        current: state.current,
         addContact,
         deleteContact,
+        setCurrent,
+        clearCurrent,
       }}
     >
       {children}
