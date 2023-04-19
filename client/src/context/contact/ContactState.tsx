@@ -16,15 +16,9 @@ import {
   CLEAR_CURRENT,
   FILTER_CONTACTS,
   CLEAR_FILTER,
-} from '../types';
+} from '../../types';
 
-interface Contact {
-  id: number;
-  name: string;
-  email: string;
-  type: string;
-  phone: string;
-}
+import { Contact } from '../../types';
 
 export interface ContactState {
   contacts: Contact[];
@@ -37,7 +31,7 @@ const ContactState = ({ children }: PropsWithChildren) => {
         id: 1,
         name: 'Mariia',
         email: 'mariia@gmail.com',
-        type: 'personal',
+        type: 'professional',
         phone: '444-44-44',
       },
       {
