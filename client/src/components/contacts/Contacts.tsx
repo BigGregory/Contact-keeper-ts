@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import ContactContext from '../../context/contact/contactContext';
+import ContactContext from '../../context/contact/ContactContext';
 import ContactItem from './ContactItem';
 
 const Contacts = () => {

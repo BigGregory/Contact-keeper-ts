@@ -2,6 +2,10 @@ import { createContext } from 'react';
 
 import { ContactState } from './ContactState';
 
-const contactContext = createContext<ContactState>({ contacts: [] });
+const ContactContext = createContext<ContactState>({
+  contacts: [],
+  addContact: (contact: any) => {},
+  deleteContact: (id: string) => {},
+});
 
-export default contactContext;
+export default ContactContext;
